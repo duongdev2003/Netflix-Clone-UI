@@ -18,7 +18,7 @@ export default function Header(props) {
         </StyledHeader>
     );
 }
-const StyledHeader = styled.div`
+const StyledHeader = styled.header`
     padding: 0 4rem;
     .logo {
         img {
@@ -32,7 +32,7 @@ const StyledHeader = styled.div`
         cursor: pointer;
         color: white;
         border-radius: 0.2rem;
-        font-weight: bold;
+        font-weight: bolder;
         font-size: 1.05rem;
     }
-`; 
+`;

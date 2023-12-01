@@ -1,29 +1,26 @@
+import { signOut } from "firebase/auth";
 import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import logo from "../assets/logo.jpg";
-import { Link, useNavigate } from "react-router-dom";
+import { firebaseAuth } from "../utils/firebase-config";
 import { FaPowerOff, FaSearch } from "react-icons/fa";
-import { onAuthStateChanged, signOut } from "firebase/auth";
-import {firebaseAuth } from "../utils/firebase-config";
 export default function Navbar({ isScrolled }) {
+    const [showSearch, setShowSearch] = useState(false);
+    const [inputHover, setInputHover] = useState(false);
     const links = [
         { name: "Home", link: "/" },
         { name: "TV Shows", link: "/tv" },
         { name: "Movies", link: "/movies" },
         { name: "My List", link: "/mylist" },
     ];
-    const navigate = useNavigate();
-    onAuthStateChanged(firebaseAuth, (currentUser) => {
-        if (!currentUser) navigate("/login");
-    });
-    const [showSearch, setShowSearch] = useState(false);
-    const [inputHover, setInputHover] = useState(false);
+
     return (
         <Container>
-            <nav className={`flex ${isScrolled ? "scrolled" : ""}`}>
+            <nav className={`${isScrolled ? "scrolled" : ""} flex`}>
                 <div className="left flex a-center">
                     <div className="brand flex a-center j-center">
-                        <img src={logo} alt="logo" />
+                        <img src={logo} alt="Logo" />
                     </div>
                     <ul className="links flex">
                         {links.map(({ name, link }) => {
@@ -37,12 +34,14 @@ export default function Navbar({ isScrolled }) {
                 </div>
                 <div className="right flex a-center">
                     <div
-                        className={`search  ${showSearch ? "show-search" : ""}`}
+                        className={`search ${showSearch ? "show-search" : ""}`}
                     >
                         <button
                             onFocus={() => setShowSearch(true)}
                             onBlur={() => {
-                                if (!inputHover) setShowSearch(false);
+                                if (!inputHover) {
+                                    setShowSearch(false);
+                                }
                             }}
                         >
                             <FaSearch />
@@ -78,6 +77,7 @@ const Container = styled.div`
         width: 100%;
         justify-content: space-between;
         position: fixed;
+        top: 0;
         z-index: 2;
         padding: 0 4rem;
         align-items: center;
@@ -123,15 +123,20 @@ const Container = styled.div`
                 padding-left: 0.5rem;
                 button {
                     background-color: transparent;
+                    border: none;
+                    &:focus {
+                        outline: none;
+                    }
                     svg {
                         color: white;
+                        font-size: 1.2rem;
                     }
                 }
                 input {
                     width: 0;
                     opacity: 0;
                     visibility: hidden;
-                    transition: .3s ease-in-out;
+                    transition: 0.3s ease-in-out;
                     background-color: transparent;
                     border: none;
                     color: white;
@@ -147,7 +152,7 @@ const Container = styled.div`
                     width: 100%;
                     opacity: 1;
                     visibility: visible;
-                    padding: 0.2rem;
+                    padding: 0.3rem;
                 }
             }
         }

@@ -1,12 +1,11 @@
-import React, { useState, useRef } from "react";
-import Card from "./Card";
+import React, { useRef, useState } from "react";
 import styled from "styled-components";
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai";
-
+import Card from "./Card";
 export default React.memo(function CardSlider({ data, title }) {
-    const [showControls, setShowControls] = useState(false);
-    const [sliderPosition, setSliderPosition] = useState(0);
     const listRef = useRef();
+    const [sliderPosition, setSliderPosition] = useState(0);
+    const [showControls, setShowControls] = useState(false);
     const handleDirection = (direction) => {
         let distance = listRef.current.getBoundingClientRect().x - 70;
         if (direction === "left" && sliderPosition > 0) {
@@ -14,8 +13,9 @@ export default React.memo(function CardSlider({ data, title }) {
             setSliderPosition(sliderPosition - 1);
         }
         if (direction === "right" && sliderPosition < 4) {
-            listRef.current.style.transform = `translateX(${-230 + distance
-                }px)`;
+            listRef.current.style.transform = `translateX(${
+                -230 + distance
+            }px)`;
             setSliderPosition(sliderPosition + 1);
         }
     };
@@ -30,8 +30,9 @@ export default React.memo(function CardSlider({ data, title }) {
             <h1>{title}</h1>
             <div className="wrapper">
                 <div
-                    className={`slider-action left ${!showControls ? "none" : ""
-                        } flex j-center a-center`}
+                    className={`slider-action left ${
+                        !showControls ? "none" : ""
+                    } flex j-center a-center`}
                 >
                     <AiOutlineLeft onClick={() => handleDirection("left")} />
                 </div>
@@ -47,8 +48,9 @@ export default React.memo(function CardSlider({ data, title }) {
                     })}
                 </div>
                 <div
-                    className={`slider-action right ${!showControls ? "none" : ""
-                        } flex j-center a-center`}
+                    className={`slider-action right ${
+                        !showControls ? "none" : ""
+                    } flex j-center a-center`}
                 >
                     <AiOutlineRight onClick={() => handleDirection("right")} />
                 </div>
@@ -56,7 +58,6 @@ export default React.memo(function CardSlider({ data, title }) {
         </Container>
     );
 });
-
 const Container = styled.div`
     gap: 1rem;
     position: relative;

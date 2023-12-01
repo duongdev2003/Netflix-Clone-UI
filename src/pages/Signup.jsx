@@ -3,32 +3,32 @@ import {
     onAuthStateChanged,
 } from "firebase/auth";
 import React, { useState } from "react";
-// import { Navigate, useNavigate } from "react-router-dom";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import BackgroundImage from "../components/BackgroundImage";
 import Header from "../components/Header";
 import { firebaseAuth } from "../utils/firebase-config";
-export default function Signup() {
+function Signup() {
     const [showPassword, setShowPassword] = useState(false);
-    const navigate = useNavigate();
     const [formValues, setFormValues] = useState({
         email: "",
         password: "",
     });
+    const navigate = useNavigate();
 
     const handleSignIn = async () => {
         try {
             const { email, password } = formValues;
             await createUserWithEmailAndPassword(firebaseAuth, email, password);
-        } catch (err) {
-            console.log(err);
+        } catch (error) {
+            console.log(error);
         }
     };
 
     onAuthStateChanged(firebaseAuth, (currentUser) => {
         if (currentUser) navigate("/");
     });
+
     return (
         <Container showPassword={showPassword}>
             <BackgroundImage />
@@ -36,48 +36,49 @@ export default function Signup() {
                 <Header login />
                 <div className="body flex column a-center j-center">
                     <div className="text flex column">
-                        <h1>Unlimited movies, TV shows and more</h1>
+                        <h1>Unlimited movies, TV shows and more.</h1>
                         <h4>Watch anywhere. Cancel anytime.</h4>
                         <h6>
                             Ready to watch? Enter your email to create or
-                            restart membership
+                            restart membership.
                         </h6>
                     </div>
                     <div className="form">
                         <input
                             type="email"
-                            placeholder="Email Address"
-                            name="email"
-                            value={formValues.email}
+                            placeholder="Email address"
                             onChange={(e) =>
                                 setFormValues({
                                     ...formValues,
                                     [e.target.name]: e.target.value,
                                 })
                             }
+                            name="email"
+                            value={formValues.email}
                         />
                         {showPassword && (
                             <input
                                 type="password"
                                 placeholder="Password"
-                                name="password"
-                                value={formValues.password}
                                 onChange={(e) =>
                                     setFormValues({
                                         ...formValues,
                                         [e.target.name]: e.target.value,
                                     })
                                 }
+                                name="password"
+                                value={formValues.password}
                             />
                         )}
-
                         {!showPassword && (
                             <button onClick={() => setShowPassword(true)}>
                                 Get Started
                             </button>
                         )}
                     </div>
-                    <button onClick={handleSignIn}>Sign Up</button>
+                    {showPassword && (
+                        <button onClick={handleSignIn}>Log In</button>
+                    )}
                 </div>
             </div>
         </Container>
@@ -143,3 +144,5 @@ const Container = styled.div`
         }
     }
 `;
+
+export default Signup;
